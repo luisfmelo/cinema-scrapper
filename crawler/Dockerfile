@@ -57,13 +57,11 @@ RUN BUILD_DEPS='unzip' && \
     rm -rf /var/lib/apt/lists/*
 
 
-COPY . /app
+COPY . /src
+WORKDIR /src
 
-RUN pip install -r /app/requirements.txt
-RUN chmod -R 755 /app
+RUN pip install --upgrade pip
+RUN pip install -r /src/requirements.txt
+RUN chmod -R 755 /src
 
-WORKDIR /app
-
-EXPOSE 4444
-
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["/src/entrypoint.sh"]

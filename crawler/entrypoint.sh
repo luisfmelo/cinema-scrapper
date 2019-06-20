@@ -5,7 +5,7 @@ echo "Creating Crons..."
 mkdir -p /crontab_logs
 
 # Add necessary permissions
-chmod 777 /app/
+chmod 777 /src/
 
 # Create Crons
 echo "07 * * * * python /app/crawler.py >> /crontab_logs/crawler.log" >> mycron

@@ -1,36 +1,48 @@
 version: '3'
 
 services:
-#   db:
-#     image: postgres
-#     restart: always
-#     ports:
-#       - "5432:5432"
-#     env_file:
-#       - db.env
-#     volumes:
-#       - ./postgresql:/postgresql
-
   mqtt:
     image: toke/mosquitto
     ports:
       - "1884:1883"
 
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - private.env
+    volumes:
+      - ./postgresql:/postgresql
+
+  falcon_api:
+    restart: always
+    build: falcon_api/.
+    env_file:
+      - private.env
+      - public.env
+    expose:
+      - 9000
+    depends_on:
+      - db
+      - mqtt
+    tty: true
+
   crawler:
+    restart: always
     build: crawler/.
     depends_on:
       - mqtt
     env_file:
-      - public.env
       - private.env
+      - public.env
     tty: true
 
-#  api:
-#     build: api
-#     env_file:
-#       - db.env
-#       - common.env
-#     depends_on:
-#       - db
-#       - mqtt
-#
+  nginx:
+    restart: always
+    build: nginx/.
+    ports:
+      - 8080:80
+    links:
+      - falcon_api:falcon_api
