@@ -46,4 +46,4 @@ MQTT = {
     'PORT': os.environ.get('MOSQUITTO_PORT', '1883')
 }
 
-NEW_SESSION_TOPIC = 'new_session_topic'
+NEW_SESSION_TOPIC = os.environ['NEW_SESSION_TOPIC']
