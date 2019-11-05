@@ -6,7 +6,22 @@ CINEMAS = [
         "name": "Nos Lusomundo Cinemas",
         "url": "http://cinemas.nos.pt/pages/cartaz.aspx",
         "class": "cinemas-nos"
-    }
+    },
+    # {
+    #     "name": "Castello Lopes Cinemas",
+    #     "url": "https://castellolopescinemas.pt/exibicao/",
+    #     "class": "cinemas-castello-lopes"
+    # },
+    # {
+    #     "name": "Castello Lopes Cinemas",
+    #     "url": "https://castellolopescinemas.pt/brevemente/",
+    #     "class": "cinemas-castello-lopes"
+    # }
+    # {
+    #     "name": "Cineplace Nova Arcada - Braga",
+    #     "url": "https://filmspot.pt/cinema/cineplace-nova-arcada-braga-111/",
+    #     "class": "cinemas-filmspot-cineplace-nova-arcada"
+    # },
 ]
 
 LOGGING_CONFIG = None
@@ -36,8 +51,8 @@ logging.config.dictConfig({
     },
 })
 
-
-CHROME_DRIVER = './chromedriver'
+chrome_driver_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'chromedriver')
+CHROME_DRIVER = os.environ.get('CHROME_DRIVER', chrome_driver_path)
 
 SLACK_WEBHOOK_URL = os.environ['SLACK_WEBHOOK_URL']
 

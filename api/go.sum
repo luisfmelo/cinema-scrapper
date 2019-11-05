@@ -83,6 +83,8 @@ github.com/prometheus/common v0.2.0/go.mod h1:TNfzLD0ON7rHzMJeJkieUDPYmFC7Snx/y8
 github.com/prometheus/procfs v0.0.0-20181005140218-185b4288413d/go.mod h1:c3At6R/oaqEKCNdg8wHV1ftS6bRYblBhIjjI8uT2IGk=
 github.com/prometheus/procfs v0.0.0-20190117184657-bf6a532e95b1/go.mod h1:c3At6R/oaqEKCNdg8wHV1ftS6bRYblBhIjjI8uT2IGk=
 github.com/rcrowley/go-metrics v0.0.0-20181016184325-3113b8401b8a/go.mod h1:bCqnVzQkZxMG4s8nGwiZ5l3QUCyqpo9Y+/ZMZ9VjZe4=
+github.com/rollbar/rollbar-go v1.2.0 h1:CUanFtVu0sa3QZ/fBlgevdGQGLWaE3D4HxoVSQohDfo=
+github.com/rollbar/rollbar-go v1.2.0/go.mod h1:czC86b8U4xdUH7W2C6gomi2jutLm8qK0OtrF5WMvpcc=
 github.com/sirupsen/logrus v1.2.0/go.mod h1:LxeOpSwHxABJmUn/MG1IvRgCAasNZTLOkJPxbbu5VWo=
 github.com/starptech/go-web v0.0.0-20190327212204-3f65eb90c6d0 h1:OA4x33fvGvPQ12gzzy44p9I6avQwcZdsx6hh0iF+4KI=
 github.com/starptech/go-web v0.0.0-20190327212204-3f65eb90c6d0/go.mod h1:Z4irgvwEnYt1oQV2uZ1XG2NsXawn/Pb+dmzJiDaqOyg=

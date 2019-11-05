@@ -5,11 +5,11 @@ from dataclasses import dataclass
 class Cinema:
     name: str
     city: [None, str]
-    cinema: str
+    company: str
 
     def to_json(self):
         return {
             'name': self.name,
             'city': self.city,
-            'cinema': self.cinema
+            'company': self.company
         }

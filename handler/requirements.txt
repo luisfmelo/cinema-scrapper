@@ -1,4 +1,0 @@
-requests
-redis
-sqlalchemy
-paho-mqtt==1.4.0

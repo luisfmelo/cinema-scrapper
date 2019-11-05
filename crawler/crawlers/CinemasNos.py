@@ -52,7 +52,7 @@ class CinemasNos(Crawler.Crawler):
                     cinema = Cinema(
                         name=self.trim(article.find_element_by_class_name('cinema').text),
                         city=None,
-                        cinema=self.__class__.__name__
+                        company=self.__class__.__name__
                     )
 
                     room = self.trim(article.find_element_by_class_name('room').text)
@@ -121,25 +121,25 @@ class CinemasNos(Crawler.Crawler):
             else:
                 notify_slack_message(self.__class__.__name__ + ': New parameter found: ' + placeholder)
 
-        # Sinopse
-        movie_sinopse = self.browser.find_element_by_class_name('sinopse').find_elements_by_tag_name('div')[1].text
+        # Synopsis
+        movie_synopsis = self.browser.find_element_by_class_name('sinopse').find_elements_by_tag_name('div')[1].text
 
         # Trailer URL
         trailer = self.browser.find_elements_by_css_selector('a[class*="trailerButton"]')
         movie_trailer_url = trailer[0].get_attribute('href') if len(trailer) else None
 
         movie = Movie(
-            title=movie_title,
-            original_title=movie_original_title,
+            title=movie_title.strip() if movie_title is not None else None,
+            original_title=movie_original_title.strip() if movie_original_title is not None else None,
             year=movie_year,
-            age_rating=movie_age_rating,
+            age_rating=movie_age_rating.strip() if movie_age_rating is not None else None,
             duration=movie_duration,
-            genre=movie_genre,
-            country=movie_country,
-            format=movie_format,
-            version=movie_version,
-            sinopse=movie_sinopse,
-            trailer_url=movie_trailer_url,
+            genre=movie_genre.strip() if movie_genre is not None else None,
+            country=movie_country.strip() if movie_country is not None else None,
+            format=movie_format.strip() if movie_format is not None else None,
+            version=movie_version.strip() if movie_version is not None else None,
+            synopsis=movie_synopsis.strip() if movie_synopsis is not None else None,
+            trailer_url=movie_trailer_url.strip() if movie_trailer_url is not None else None,
             imdb_url=None,
             rating=None,
         )

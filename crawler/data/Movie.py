@@ -12,7 +12,7 @@ class Movie:
     country: str
     version: str
     format: [None, str]
-    sinopse: [None, str]
+    synopsis: [None, str]
     trailer_url: [None, str]
     imdb_url: [None, str]
     rating: [None, float]
@@ -26,7 +26,7 @@ class Movie:
             'duration': self.duration,
             'genre': self.genre,
             'country': self.country,
-            'sinopse': self.sinopse,
+            'synopsis': self.synopsis,
             'trailer_url': self.trailer_url,
             'imdb_url': self.imdb_url,
             'rating': self.rating

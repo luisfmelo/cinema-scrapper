@@ -1,18 +1,30 @@
 package models
 
 import (
+	"errors"
 	"github.com/jinzhu/gorm"
-	"time"
 )
 
 type Cinema struct {
 	gorm.Model
 
-	ID        uint64 `gorm:"primary_key"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt *time.Time
-	Name      string `sql:"type:varchar(64)"`
-	City      string `sql:"type:varchar(64)"`
-	Cinema    string `sql:"type:varchar(64)"`
+	Name      string   `json:"name"`
+	City      string   `json:"city"`
+	Company   string   `json:"company"`
+	Latitude  *float64 `json:"latitude"`
+	Longitude *float64 `json:"longitude"`
+}
+
+func SaveCinema(cinema *Cinema) error {
+	c := db.Where(Cinema{Name: cinema.Name, City: cinema.City, Company: cinema.Company}).
+		FirstOrCreate(&cinema)
+
+	if c.Error != nil {
+		return errors.New("failed to create a cinema. " + c.Error.Error())
+	}
+	if cinema.ID <= 0 {
+		return errors.New("failed to create a cinema, connection error")
+	}
+
+	return nil
 }

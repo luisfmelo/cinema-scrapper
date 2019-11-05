@@ -14,7 +14,7 @@ services:
     env_file:
       - private.env
     volumes:
-      - ./postgresql:/postgresql
+      - ./.postgresql:/postgresql
 
   redis:
     image: redis
@@ -24,11 +24,20 @@ services:
     env_file:
       - private.env
     volumes:
-      - ./redis:/redis
+      - ./.redis:/redis
 
-  handler:
+  couchdb:
+    image: "couchdb:2.3.1"
+    hostname: couchdb.server
+    environment:
+        - private.env
+        - public.env
+    ports:
+      - "5984:5984"
+  
+  normalizer:
     restart: always
-    build: handler/.
+    build: normalizer/.
     depends_on:
       - mqtt
     env_file:
@@ -46,14 +55,14 @@ services:
       - public.env
     tty: true
 
-  falcon_api:
+  go_api:
     restart: always
-    build: falcon_api/.
+    build: api/.
     env_file:
       - private.env
       - public.env
-    expose:
-      - 9000
+    ports:
+      - "7777:8080"
     depends_on:
       - db
       - mqtt
@@ -63,7 +72,7 @@ services:
     restart: always
     build: nginx/.
     ports:
-      - 8080:80
-    links:
-      - falcon_api:falcon_api
+      - 8000:80
+    # links:
+    #   - go_api:go_api
 

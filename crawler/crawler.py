@@ -15,7 +15,6 @@ def main():
             crawler = cinema_factory(cinema['class'])
             logger.info('Crawling ' + cinema['name'] + '...')
 
-            # Get HTML of the fair website - use infinite scroll if needed
             crawler.get_infinite_scroll_page(cinema['url'])
             crawler.scrap_sessions()
             crawler.close()
