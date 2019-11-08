@@ -18,12 +18,22 @@ class Crawler(ABC):
 
     def __init__(self):
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("--disable-gpu")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_driver = CHROME_DRIVER if CHROME_DRIVER else ChromeDriverManager().install()
+        prefs = {"profile.managed_default_content_settings.images": 2, 'disk-cache-size': 4096}
+        chrome_options.add_experimental_option("prefs", prefs)
+
+        if CHROME_DRIVER:
+            # prod - chromedriver setting is set up
+            chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--no-sandbox")
+            chrome_options.add_argument("--disable-gpu")
+            chrome_options.add_argument("--disable-dev-shm-usage")
+            chrome_driver = CHROME_DRIVER
+        else:
+            # development
+            chrome_driver = ChromeDriverManager().install()
+
         self.browser = webdriver.Chrome(chrome_driver, chrome_options=chrome_options)
+        self.max_wait_Sec = 30
         time.sleep(5)
 
         self.infinite_scroll_script = """
