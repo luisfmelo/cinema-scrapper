@@ -7,5 +7,4 @@ class Api:
 
     def new_session(self, payload):
         url = f"{self.url}/api/sessions"
-        r = requests.request(method="POST", url=url, json=payload)
-        return r
+        return requests.post(url=url, json=payload)

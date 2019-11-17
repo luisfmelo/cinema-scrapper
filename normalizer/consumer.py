@@ -3,7 +3,7 @@ import logging
 from datetime import timedelta
 
 import paho.mqtt.client as paho
-import redis as redis
+from redis import Redis
 
 from config import MQTT, NEW_SESSION_TOPIC, REDIS, OMDB_API_KEY, CINEMA_API, HERE_PLACES
 
@@ -15,11 +15,11 @@ from utils import b64
 
 REDIS_EXPIRATION = timedelta(days=7)
 
-r = redis.Redis(host=REDIS["HOST"], port=REDIS["PORT"])
+redis = Redis(host=REDIS["HOST"], port=REDIS["PORT"])
 couch = CouchDB()
 c_api = cinema_api.Api(CINEMA_API["URL"])
-omdb = omdb_api.Api(OMDB_API_KEY, r)
-here_places_api = here_api.Api(HERE_PLACES["APP_ID"], HERE_PLACES["APP_CODE"], r)
+omdb = omdb_api.Api(OMDB_API_KEY, redis)
+here_places_api = here_api.Api(HERE_PLACES["APP_ID"], HERE_PLACES["APP_CODE"], redis)
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +45,7 @@ def on_message(client, userdata, msg):
         res = c_api.new_session(session.to_json())
 
         if res.status_code != 201 and res.status_code != 409:
-            raise Exception("ERROR posting to API.")
+            raise Exception("ERROR posting to API. Status code: " + res.status_code + ". Message: " + res.content)
 
         client.publish('pong', 'ack', 0)
         return msg

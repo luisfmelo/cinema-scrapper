@@ -44,7 +44,7 @@ class Api:
             raise Exception("ERROR: no results found at Here Places.")
 
         if len(results) > 1:
-            results = [r for r in results if r["category"]["id"] in ["service", "cinema"]]
+            results = [r for r in results if r["category"]["id"] in ["mall", "service", "cinema"]]
 
             if len(results) != 1:
                 max_points = 0

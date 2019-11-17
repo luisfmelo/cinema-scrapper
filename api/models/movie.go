@@ -24,11 +24,11 @@ type Movie struct {
 }
 
 func SaveMovie(movie *Movie) error {
-	c := db.Where(Movie{Title: movie.Title}).
-		FirstOrCreate(&movie)
-	if c.Error != nil {
-		return errors.New("failed to create a cinema. " + c.Error.Error())
+	db := db.Where(Movie{Title: movie.Title}).FirstOrCreate(&movie)
+	if db.Error != nil {
+		return errors.New("failed to create a cinema. " + db.Error.Error())
 	}
+
 	if movie.ID <= 0 {
 		return errors.New("failed to create a cinema, connection error")
 	}

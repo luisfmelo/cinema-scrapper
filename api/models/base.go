@@ -44,7 +44,7 @@ func init() {
 
 	db = conn.AutoMigrate(&Cinema{}, &Movie{}, &Session{})
 	db.Model(&Session{}).AddUniqueIndex("idx_session", "movie_id", "cinema_id", "room", "start_time")
-	db.Model(&Cinema{}).AddUniqueIndex("name", "city", "company")
+	db.Model(&Cinema{}).AddUniqueIndex("idx_cinema", "name", "city", "company")
 }
 
 func GetDB() *gorm.DB {

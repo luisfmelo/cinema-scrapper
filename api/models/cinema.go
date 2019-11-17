@@ -16,12 +16,11 @@ type Cinema struct {
 }
 
 func SaveCinema(cinema *Cinema) error {
-	c := db.Where(Cinema{Name: cinema.Name, City: cinema.City, Company: cinema.Company}).
-		FirstOrCreate(&cinema)
-
-	if c.Error != nil {
-		return errors.New("failed to create a cinema. " + c.Error.Error())
+	db := db.Where(Cinema{Name: cinema.Name, City: cinema.City, Company: cinema.Company}).FirstOrCreate(&cinema)
+	if db.Error != nil {
+		return errors.New("failed to create a cinema. " + db.Error.Error())
 	}
+
 	if cinema.ID <= 0 {
 		return errors.New("failed to create a cinema, connection error")
 	}

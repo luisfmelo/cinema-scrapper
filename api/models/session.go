@@ -32,11 +32,12 @@ func SaveSession(session *Session) error {
 	}
 
 	// Create Session
-	c := db.Where(Session{MovieID: session.Movie.ID, CinemaID: session.Cinema.ID, Room: session.Room, StartTime: session.StartTime}).
+	db := db.Where(Session{MovieID: session.Movie.ID, CinemaID: session.Cinema.ID, Room: session.Room, StartTime: session.StartTime}).
 		FirstOrCreate(&session)
-	if c.Error != nil {
-		return errors.New("failed to create a cinema. " + c.Error.Error())
+	if db.Error != nil {
+		return errors.New("failed to create a cinema. " + db.Error.Error())
 	}
+
 	if session.ID <= 0 {
 		return errors.New("failed to create a cinema, connection error")
 	}
