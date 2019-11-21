@@ -2,29 +2,38 @@ package main
 
 import (
 	"cinema-scrapper/api/controllers"
-	"cinema-scrapper/api/responses"
+	"fmt"
+	"github.com/getsentry/sentry-go"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 const defaultPort = "8080"
 
-func main() {
-	router := mux.NewRouter()
 
-	router.HandleFunc("/api", func(w http.ResponseWriter, r *http.Request) {
-		responses.JSON(w, http.StatusOK, map[string]interface{}{"status": "alive"})
-	}).Methods("GET")
+func main() {
+	// Sentry's handler initialization
+	sentryToken := os.Getenv("SENTRY_TOKEN")
+	err := sentry.Init(sentry.ClientOptions{
+		Dsn: fmt.Sprintf("https://%s@sentry.io/1829189", sentryToken),
+	})
+	// Since sentry emits events in the background we need to make sure they are sent before we shut down
+	sentry.Flush(time.Second * 5)
+
+	router := mux.NewRouter()
+	router.HandleFunc("/api", controllers.HealthCheck).Methods("GET")
 	router.HandleFunc("/api/cinemas", controllers.CreateCinema).Methods("POST")
 	router.HandleFunc("/api/sessions", controllers.CreateSession).Methods("POST")
 	router.HandleFunc("/api/movies", controllers.CreateMovie).Methods("POST")
 
 	port := getPort()
 
-	err := http.ListenAndServe(":"+port, router)
+	err = http.ListenAndServe(":"+port, router)
 	if err != nil {
+		sentry.CaptureException(err)
 		log.Fatal("Error starting the server. " + err.Error())
 	}
 

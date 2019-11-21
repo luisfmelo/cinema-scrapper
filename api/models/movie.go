@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"github.com/getsentry/sentry-go"
 	"github.com/jinzhu/gorm"
 )
 
@@ -14,8 +15,6 @@ type Movie struct {
 	Duration  int      `json:"duration"`
 	Genre     string   `json:"genre"`
 	Country   string   `json:"country"`
-	Version   *string  `json:"version"`
-	Format    *string  `json:"format"`
 	Synopsis  *string  `json:"synopsis"`
 	Trailer   *string  `json:"trailer"`
 	ImdbURL   *string  `json:"imdb_url"`
@@ -26,11 +25,13 @@ type Movie struct {
 func SaveMovie(movie *Movie) error {
 	db := db.Where(Movie{Title: movie.Title}).FirstOrCreate(&movie)
 	if db.Error != nil {
-		return errors.New("failed to create a cinema. " + db.Error.Error())
+		sentry.CaptureException(db.Error)
+		return errors.New("failed to create a movie. " + db.Error.Error())
 	}
 
 	if movie.ID <= 0 {
-		return errors.New("failed to create a cinema, connection error")
+		sentry.CaptureException(errors.New("failed to create a movie, connection error"))
+		return errors.New("failed to create a movie, connection error")
 	}
 
 	return nil

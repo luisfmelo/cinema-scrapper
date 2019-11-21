@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"github.com/getsentry/sentry-go"
 	"github.com/jinzhu/gorm"
 	"time"
 )
@@ -15,6 +16,8 @@ type Session struct {
 	Cinema    Cinema    `json:"cinema"`
 	Room      string    `json:"room"`
 	StartTime time.Time `json:"start_time"`
+	Version   *string   `json:"version"`
+	Format    *string   `json:"format"`
 }
 
 func SaveSession(session *Session) error {
@@ -35,10 +38,12 @@ func SaveSession(session *Session) error {
 	db := db.Where(Session{MovieID: session.Movie.ID, CinemaID: session.Cinema.ID, Room: session.Room, StartTime: session.StartTime}).
 		FirstOrCreate(&session)
 	if db.Error != nil {
-		return errors.New("failed to create a cinema. " + db.Error.Error())
+		sentry.CaptureException(db.Error)
+		return errors.New("failed to create a session. " + db.Error.Error())
 	}
 
 	if session.ID <= 0 {
+		sentry.CaptureException(errors.New("failed to create a session, connection error"))
 		return errors.New("failed to create a cinema, connection error")
 	}
 

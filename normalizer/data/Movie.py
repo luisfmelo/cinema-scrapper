@@ -78,7 +78,7 @@ class Movie:
 
     @staticmethod
     def search_keyword(movie_title: str, keyword: str) -> (str, bool):
-        idx = movie_title.lower().find(keyword)
+        idx = movie_title.lower().find(keyword.lower())
         # Found
         if idx != -1:
             # Search for parenthesis before '(' and after ')' -> to remove them
@@ -88,6 +88,6 @@ class Movie:
             end_idx = idx + len(keyword) + 1 if with_parenthesis else idx + len(keyword)
 
             title = movie_title[:start_idx] + movie_title[end_idx:]
-            return movie_title.strip(), True
+            return title.strip(), True
 
         return movie_title, False
